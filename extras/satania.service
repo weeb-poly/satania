@@ -1,0 +1,12 @@
+[Unit]
+Description=Satania Run
+After=network.target
+
+[Service]
+Type=oneshot
+User=satania
+Group=nogroup
+WorkingDirectory=/etc/satania/betty
+ExecStart=/etc/satania/.local/bin/pipenv run main
+Environment="LC_ALL='en_US.UTF-8'"
+Environment="LANG='en_US.UTF-8'"
