@@ -1,6 +1,6 @@
 import os
 
-import arrow
+from arrow import Arrow
 import aiohttp
 from ics import Calendar
 
@@ -16,7 +16,7 @@ async def get_cal():
     return None
 
 
-async def get_embeds(c, start, end):
+async def get_embeds(c, start: Arrow, end: Arrow):
     t = timeline_patch(c.timeline)
 
     events = {}
