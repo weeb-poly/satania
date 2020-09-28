@@ -3,7 +3,8 @@ import asyncio
 
 import aiohttp
 import arrow
-from discord import Webhook, AsyncWebhookAdapter
+from arrow import Arrow
+from discord import Embed, Webhook, AsyncWebhookAdapter
 
 from .ical_parse import get_cal, get_embeds
 from .utils import divide_chunks
@@ -13,7 +14,7 @@ WEBHOOK_URL = os.environ.get('WEBHOOK_URL')
 PING_ROLE = os.environ.get('PING_ROLE')
 
 
-async def send_embeds(embs):
+async def send_embeds(embs: List[Embed]) -> None:
     # We only ping when enabled
     send_args = {}
     if PING_ROLE is not None:
@@ -33,15 +34,14 @@ async def send_embeds(embs):
             await webhook.send(**send_args, embeds=embs)
 
 
-async def update_channel(start, end):
+async def update_channel(start: Arrow, end: Arrow) -> None:
     cal = await get_cal()
     embs = await get_embeds(cal, start, end)
     await send_embeds(embs)
 
 
 async def main():
-    now = arrow.now()
-    start = now
+    start = arrow.now()
     end = start.shift(minutes=20)
     await update_channel(start, end)
 
