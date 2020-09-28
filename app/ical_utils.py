@@ -1,9 +1,12 @@
 from types import MethodType
 
+from arrow import Arrow
+from discord import Embed
+
 from .utils import quickembed
 
 
-def start_included(self, start, end):
+def start_included(self, start: Arrow, end: Arrow):
     for event in self:
         if (start <= event.begin <= end):
             yield event
@@ -21,5 +24,5 @@ def timeline_patch(t):
     return t
 
 
-def event2embed(e):
+def event2embed(e) -> Embed:
     return quickembed(e.name, e.description, e.begin, e.end)
