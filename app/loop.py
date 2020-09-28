@@ -3,17 +3,17 @@ import asyncio
 import arrow
 
 from .main import update_channel
+from .utils import sleep_till
 
 
 async def main():
-    start = None
-    end = arrow.now()
+    start = arrow.now()
+    end = start.clone()
     while True:
-        start = end.clone()
+        start = end
         end = end.shift(minutes=20)
         await update_channel(start, end)
-        sleep_time = (end - arrow.now()).total_seconds()
-        await asyncio.sleep(sleep_time)
+        await sleep_till(end)
 
 
 if __name__ == '__main__':
