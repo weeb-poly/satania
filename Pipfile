@@ -10,6 +10,7 @@ ics = "*"
 discord-py = "*"
 aiohttp = "*"
 html2markdown = "*"
+gcsa = "*"
 
 [requires]
 python_version = "3.8"

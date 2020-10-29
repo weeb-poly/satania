@@ -1,12 +1,13 @@
 import os
 import asyncio
+from typing import List
 
 import aiohttp
 import arrow
 from arrow import Arrow
 from discord import Embed, Webhook, AsyncWebhookAdapter
 
-from .ical_parse import get_cal, get_embeds
+from .gcal_parse import get_cal, get_embeds
 from .utils import divide_chunks
 
 
