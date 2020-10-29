@@ -8,7 +8,7 @@ from arrow import Arrow
 from discord import Embed, Webhook, AsyncWebhookAdapter
 
 from .gcal_parse import get_cal, get_embeds
-from .utils import divide_chunks
+from .utils import divide_chunks, sleep_till
 
 
 WEBHOOK_URL = os.environ.get('WEBHOOK_URL')
@@ -35,15 +35,27 @@ async def send_embeds(embs: List[Embed]) -> None:
             await webhook.send(**send_args, embeds=embs)
 
 
+async def schedule_embed(time: Arrow, embed: Embed):
+    await sleep_till(time)
+    await send_embeds([embed])
+
+
 async def update_channel(start: Arrow, end: Arrow) -> None:
     cal = await get_cal()
     embs = await get_embeds(cal, start, end)
     await send_embeds(embs)
 
 
+async def schedule_channel_notifications(start: Arrow, end: Arrow) -> None:
+    cal = await get_cal()
+    embs = await get_notify_embeds(cal, start, end)
+    for (time, emb) in embs:
+        asyncio.create_task(schedule_embed(time, emb))
+
+
 async def main():
     start = arrow.now()
-    end = start.shift(minutes=20)
+    end = start.shift(minutes=30)
     await update_channel(start, end)
 
 

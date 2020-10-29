@@ -39,14 +39,17 @@ async def get_notify_embeds(cal, start: Arrow, end: Arrow):
         order_by="startTime"
     )
 
-    # TODO: Use event.reminders to schedule notifications
-
     for event in events_res:
         embed = event2embed(event)
-        for reminder in event.reminders:
-            if isinstance(reminder, PopupReminder):
-                pingTime = arrow.get(event.start).shift(minutes=-1*minutes_before_start)
-                if pingTime >= start:
-                    events.append((pingTime, embed,))
+        if len(event.reminders) == 0:
+            pingTime = arrow.get(event.start)
+            if pingTime >= start:
+                events.append((pingTime, embed,))
+        else:
+            for reminder in event.reminders:
+                if isinstance(reminder, PopupReminder):
+                    pingTime = arrow.get(event.start).shift(minutes=-1*minutes_before_start)
+                    if pingTime >= start:
+                        events.append((pingTime, embed,))
 
     return events

@@ -6,9 +6,7 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-ics = "*"
 discord-py = "*"
-aiohttp = "*"
 html2markdown = "*"
 gcsa = "*"
 
