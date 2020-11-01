@@ -2,17 +2,21 @@ import asyncio
 
 import arrow
 
-from .main import update_channel
+from .main import schedule_timed_embeds
 from .utils import sleep_till
 
+from .gcal.parse import get_cal
 
-async def main():
-    start = arrow.now()
+
+async def main() -> None:
+    cal = get_cal()
+    start = arrow.now().floor('minute')
     end = start.clone()
+
     while True:
         start = end
         end = end.shift(minutes=20)
-        await update_channel(start, end)
+        await schedule_timed_embeds(cal, start, end)
         await sleep_till(end)
 
 

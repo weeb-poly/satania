@@ -3,7 +3,7 @@ from types import MethodType
 from arrow import Arrow
 from discord import Embed
 
-from .utils import quickembed
+from ..utils import quickembed
 
 
 def start_included(self, start: Arrow, end: Arrow):

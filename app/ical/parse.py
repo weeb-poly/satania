@@ -4,7 +4,7 @@ from arrow import Arrow
 import aiohttp
 from ics import Calendar
 
-from .ical_utils import timeline_patch, event2embed, rrule
+from .utils import timeline_patch, event2embed, rrule
 
 ICAL_URL = os.environ.get('ICAL_URL')
 
