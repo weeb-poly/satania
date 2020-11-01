@@ -1,0 +1,10 @@
+version: '3.7'
+
+services:
+  app:
+    build: .
+    image: weeb-poly/satania
+    environment:
+      GCAL_ID: "${GCAL_ID}"
+      WEBHOOK_URL: "${WEBHOOK_URL}"
+      PING_ROLE: "${PING_ROLE}"

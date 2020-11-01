@@ -1,0 +1,22 @@
+# General Stuff
+.git
+.dockerignore
+Dockerfile
+docker-compose.yml
+
+# Docs
+*.md
+
+# Example Files
+example.env
+
+# Env File
+# Used by pipenv
+.env
+
+# Cached Token
+# Created on Run
+token.pickle
+
+# Extras
+extras

@@ -18,7 +18,7 @@ PING_ROLE = os.environ.get('PING_ROLE')
 async def send_embeds(embs: List[Embed]) -> None:
     # We only ping when enabled
     send_args = {}
-    if PING_ROLE is not None:
+    if PING_ROLE:
         send_args['content'] = f"<@&{PING_ROLE}>"
 
     # You can only send 10 embeds (events) per request

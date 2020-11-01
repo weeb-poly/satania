@@ -17,3 +17,4 @@ python_version = "3.8"
 [scripts]
 loop = "python -m app.loop"
 main = "python -m app.main"
+docker = "docker-compose -f docker-compose.yml up -d --build --remove-orphans"

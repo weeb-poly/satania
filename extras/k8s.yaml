@@ -1,0 +1,16 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: hello
+spec:
+  schedule: "*/30 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: satania
+            image: weeb-poly/satania
+            command: ["python"]
+            args: ["-m", "app.main"]
+          restartPolicy: OnFailure
