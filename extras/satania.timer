@@ -2,7 +2,7 @@
 Description=Satania Timer
 
 [Timer]
-OnCalendar=*:0/20
+OnCalendar=*:0/30
 
 [Install]
 WantedBy=timers.target
