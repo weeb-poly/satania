@@ -1,16 +1,46 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: hello
+  name: satania
 spec:
-  schedule: "*/30 * * * *"
+  schedule: '*/30 * * * *'
   jobTemplate:
     spec:
       template:
         spec:
-          containers:
-          - name: satania
-            image: weeb-poly/satania
-            command: ["python"]
-            args: ["-m", "app.main"]
           restartPolicy: OnFailure
+          containers:
+            - name: satania
+              image: weeb-poly/satania
+              command:
+                - python
+              args:
+                - '-m'
+                - app.main
+              volumeMounts:
+                - name: gcal_creds
+                  mountPath: /app/secret
+                  readOnly: true
+              env:
+                - name: GCAL_ID
+                  valueFrom:
+                    secretKeyRef:
+                      name: satania-secrets
+                      key: google_calendar_id
+                - name: WEBHOOK_URL
+                  valueFrom:
+                    secretKeyRef:
+                      name: satania-secrets
+                      key: discord_webhook_url
+                - name: PING_ROLE
+                  valueFrom:
+                    secretKeyRef:
+                      name: satania-secrets
+                      key: calendar_ping_role
+          volumes:
+            - name: gcal_creds
+              secret:
+                secretName: satania-secrets
+                items:
+                  - key: google_credentials
+                    path: creds.json

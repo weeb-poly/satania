@@ -35,7 +35,7 @@ def check_valid_creds(token_path: str = "token.pickle") -> bool:
     return valid
 
 
-def gen_service_token(token_path: str = "token.pickle", acct_fn: str = "credentials.json") -> None:
+def gen_service_token(token_path: str = "token.pickle", acct_fn: str = "secret/creds.json") -> None:
     creds = service_account.Credentials.from_service_account_file(
         acct_fn,
         scopes=['https://www.googleapis.com/auth/calendar.readonly']

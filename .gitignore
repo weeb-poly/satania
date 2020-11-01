@@ -136,5 +136,5 @@ postgres-data
 .idea
 
 # Other
-credentials.json
+secret
 token.pickle
