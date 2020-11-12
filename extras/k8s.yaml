@@ -12,35 +12,32 @@ spec:
           containers:
             - name: satania
               image: weeb-poly/satania
-              command:
-                - python
-              args:
-                - '-m'
-                - app.main
+              command: ['python']
+              args: ['-m', 'app.main']
               volumeMounts:
-                - name: gcal_creds
+                - name: satania_secret_vol
                   mountPath: /app/secret
                   readOnly: true
               env:
                 - name: GCAL_ID
                   valueFrom:
-                    secretKeyRef:
-                      name: satania-secrets
+                    configMapKeyRef:
+                      name: satania-config
                       key: google_calendar_id
+                - name: PING_ROLE
+                  valueFrom:
+                    configMapKeyRef:
+                      name: satania-config
+                      key: calendar_ping_role
                 - name: WEBHOOK_URL
                   valueFrom:
                     secretKeyRef:
-                      name: satania-secrets
+                      name: satania-secret
                       key: discord_webhook_url
-                - name: PING_ROLE
-                  valueFrom:
-                    secretKeyRef:
-                      name: satania-secrets
-                      key: calendar_ping_role
           volumes:
-            - name: gcal_creds
+            - name: satania_secret_vol
               secret:
-                secretName: satania-secrets
+                secretName: satania-secret
                 items:
                   - key: google_credentials
                     path: creds.json
