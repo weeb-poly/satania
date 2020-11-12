@@ -1,6 +1,7 @@
 import asyncio
 
 import arrow
+import uvloop
 
 from .main import schedule_timed_embeds
 from .utils import sleep_till
@@ -21,5 +22,6 @@ async def main() -> None:
 
 
 if __name__ == '__main__':
+    uvloop.install()
     loop = asyncio.get_event_loop()
     loop.run_until_complete(main())

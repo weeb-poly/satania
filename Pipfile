@@ -10,6 +10,7 @@ arrow = "*"
 discord-py = "*"
 html2markdown = "*"
 gcsa = "*"
+uvloop = "*"
 
 [requires]
 python_version = "3.8"

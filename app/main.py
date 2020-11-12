@@ -4,6 +4,7 @@ from typing import List
 
 import aiohttp
 import arrow
+import uvloop
 from arrow import Arrow
 from discord import Embed, Webhook, AsyncWebhookAdapter
 
@@ -56,5 +57,6 @@ async def main() -> None:
 
 
 if __name__ == '__main__':
+    uvloop.install()
     loop = asyncio.get_event_loop()
     loop.run_until_complete(main())
