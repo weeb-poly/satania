@@ -1,7 +1,7 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: satania
+  name: satania-cronjob
 spec:
   schedule: '*/30 * * * *'
   jobTemplate:
@@ -9,16 +9,25 @@ spec:
       template:
         spec:
           restartPolicy: OnFailure
+          volumes:
+            - name: satania-google-secret
+              secret:
+                secretName: satania-secret
+                items:
+                  - key: google-key
+                    path: key.json
           containers:
             - name: satania
-              image: weeb-poly/satania
+              image: ghcr.io/weeb-poly/weeb-poly/satania
               command: ['python']
               args: ['-m', 'app.main']
               volumeMounts:
-                - name: satania_secret_vol
-                  mountPath: /app/secret
+                - name: satania-google-secret
+                  mountPath: /var/secrets/google
                   readOnly: true
               env:
+                - name: GOOGLE_APPLICATION_CREDENTIALS
+                  value: /var/secrets/google/key.json
                 - name: GCAL_ID
                   valueFrom:
                     configMapKeyRef:
@@ -33,11 +42,23 @@ spec:
                   valueFrom:
                     secretKeyRef:
                       name: satania-secret
-                      key: discord_webhook_url
-          volumes:
-            - name: satania_secret_vol
-              secret:
-                secretName: satania-secret
-                items:
-                  - key: google_credentials
-                    path: creds.json
+                      key: discord-webhook
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: satania-config
+data:
+  google_calendar_id: "ffffffffffffffffffffffffff@group.calendar.google.com"
+  calendar_ping_role: "000000000000000000"  
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: satania-secret
+type: Opaque
+data:
+  # These secrets are fake for obvious reasons
+  # kubectl create secret generic satania-secret --from-file=google-key=./secrets/creds.json --from-literal=discord-webhook="${WEBHOOK_URL}"
+  discord-webhook: aHR0cHM6Ly9kaXNjb3JkYXBwLmNvbS9hcGkvd2ViaG9va3MvMTk5NzM3MjU0OTI5NzYwMjU2LzNkODliYjc1NzJlMGZiMzBkODEyODM2N2IzYjFiNDRmZWNkMTcyNmRlMTM1Y2JlMjhhNDFmOGIyZjc3N2MzNzJiYTI5MzllNzIyNzliOTQ1MjZmZjVkMWJkNDM1OGQ2NWNmMTE=
+  google-key: eyJ0eXBlIjoic2VydmljZV9hY2NvdW50IiwicHJvamVjdF9pZCI6InByb2plY3RfaWQiLCJwcml2YXRlX2tleV9pZCI6ImZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmYiLCJwcml2YXRlX2tleSI6Ii0tLS0tQkVHSU4gUFJJVkFURSBLRVktLS0tLVxuPVxuLS0tLS1FTkQgUFJJVkFURSBLRVktLS0tLVxuIiwiY2xpZW50X2VtYWlsIjoiYWNjb3VudF9uYW1lQHByb2plY3RfaWQuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJjbGllbnRfaWQiOiIwMDAwMDAwMDAwMDAwMDAwMDAwMDAiLCJhdXRoX3VyaSI6Imh0dHBzOi8vYWNjb3VudHMuZ29vZ2xlLmNvbS9vL29hdXRoMi9hdXRoIiwidG9rZW5fdXJpIjoiaHR0cHM6Ly9vYXV0aDIuZ29vZ2xlYXBpcy5jb20vdG9rZW4iLCJhdXRoX3Byb3ZpZGVyX3g1MDlfY2VydF91cmwiOiJodHRwczovL3d3dy5nb29nbGVhcGlzLmNvbS9vYXV0aDIvdjEvY2VydHMiLCJjbGllbnRfeDUwOV9jZXJ0X3VybCI6Imh0dHBzOi8vd3d3Lmdvb2dsZWFwaXMuY29tL3JvYm90L3YxL21ldGFkYXRhL3g1MDkvYWNjb3VudF9uYW1lJTQwcHJvamVjdF9pZC5pYW0uZ3NlcnZpY2VhY2NvdW50LmNvbSJ9Cg==
