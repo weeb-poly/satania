@@ -3,7 +3,7 @@ import asyncio
 import arrow
 import uvloop
 
-from .main import schedule_timed_embeds
+from .once import schedule_timed_embeds
 from .utils import sleep_till
 
 from .gcal.parse import get_cal
@@ -21,7 +21,11 @@ async def main() -> None:
         await sleep_till(end)
 
 
-if __name__ == '__main__':
+def cli() -> None:
     uvloop.install()
     loop = asyncio.get_event_loop()
     loop.run_until_complete(main())
+
+
+if __name__ == '__main__':
+    cli()

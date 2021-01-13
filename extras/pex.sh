@@ -10,8 +10,8 @@ pex \
 
 pex \
   --requirement=requirements.txt \
-  -e app.main \
+  -e app.once \
   --sources-directory=. \
-  --output-file=satania-main.pex
+  --output-file=satania-once.pex
 
 rm requirements.txt

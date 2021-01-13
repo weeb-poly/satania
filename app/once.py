@@ -56,7 +56,11 @@ async def main() -> None:
     await schedule_timed_embeds(cal, start, end)
 
 
-if __name__ == '__main__':
+def cli() -> None:
     uvloop.install()
     loop = asyncio.get_event_loop()
     loop.run_until_complete(main())
+
+
+if __name__ == '__main__':
+    cli()

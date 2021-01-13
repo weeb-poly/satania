@@ -4,7 +4,7 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-pex = "*"
+shiv = "*"
 
 [packages]
 arrow = "*"
@@ -18,8 +18,9 @@ python_version = "3.8"
 
 [scripts]
 loop = "python -m app.loop"
-main = "python -m app.main"
+once = "python -m app.once"
 tmux = "tmux new-session -d -s satania 'python -m app.loop'"
 docker = "docker-compose -f docker-compose.yml up -d --build --remove-orphans"
-pex-build = "./extras/pex.sh"
-pex-run-loop = "./satania-loop.pex"
+shiv-build = "./extras/shiv.sh"
+shiv-run-loop = "./satania-loop.pyz"
+shiv-run-once = "./satania-once.pyz"
