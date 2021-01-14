@@ -10,6 +10,8 @@ from .utils import event2embed, check_valid_creds, gen_service_token
 
 
 GCAL_ID = os.environ.get('GCAL_ID')
+GAPP_CREDS = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS', './secret/creds.json')
+GAPP_TOK = os.environ.get('GOOGLE_APPLICATION_TOKEN', './token.pickle')
 
 
 def get_cal() -> GoogleCalendar:
@@ -17,13 +19,13 @@ def get_cal() -> GoogleCalendar:
     # and gcsa doesn't support service accounts
     # I made a workaround
 
-    if not check_valid_creds():
-        gen_service_token()
+    if not check_valid_creds(GAPP_TOK):
+        gen_service_token(GAPP_TOK, GAPP_CREDS)
 
     return GoogleCalendar(
         calendar=GCAL_ID,
         read_only=True,
-        token_path="token.pickle"
+        token_path=GAPP_TOK
     )
 
 
@@ -72,5 +74,5 @@ def get_notify_embeds(cal: GoogleCalendar, start: Arrow, end: Arrow) -> List[Tup
                 pingTime = arrow.get(event.start).shift(minutes=min_shift)
                 if pingTime.is_between(start, end, '[)'):
                     embeds.append((pingTime, embed,))
-    
+
     return embeds
