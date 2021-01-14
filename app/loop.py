@@ -10,11 +10,16 @@ from .gcal.parse import get_cal
 
 
 async def main() -> None:
-    cal = get_cal()
+    # cal = get_cal()
+    cal = None
     start = arrow.now().floor('minute')
     end = start.clone()
 
     while True:
+        # Attempt to avoid issues with auth
+        # by forcefully reloading the calendar
+        # every iteration of the loop
+        cal = get_cal()
         start = end
         end = end.shift(minutes=20)
         await schedule_timed_embeds(cal, start, end)
