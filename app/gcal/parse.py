@@ -42,11 +42,10 @@ def get_embeds(cal: GoogleCalendar, start: Arrow, end: Arrow) -> List[Embed]:
 
 
 def get_notify_embeds(cal: GoogleCalendar, start: Arrow, end: Arrow) -> List[Tuple[Arrow, Embed]]:
-    _end = start.clone().shift(weeks=1)
-
     events_res = cal.get_events(
         time_min=start.datetime,
-        time_max=_end.datetime
+        time_max=end.datetime,
+        order_by="startTime"
     )
 
     embeds = []
@@ -61,7 +60,7 @@ def get_notify_embeds(cal: GoogleCalendar, start: Arrow, end: Arrow) -> List[Tup
             #     yield (pingTime, embed,)
 
             # One notification 10 mins before
-            pingTime = pingTime.shift(minutes=-15)
+            pingTime = pingTime.shift(minutes=-10)
             if pingTime.is_between(start, end, '[)'):
                 embeds.append((pingTime, embed,))
 

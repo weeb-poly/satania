@@ -1,0 +1,47 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: satania-cronjob
+  namespace: satania
+  labels:
+    app.kubernetes.io/part-of: satania
+spec:
+  schedule: '*/30 * * * *'
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          volumes:
+            - name: satania-google-secret
+              secret:
+                secretName: satania-secret
+                items:
+                  - key: google-key
+                    path: key.json
+          containers:
+            - name: satania
+              image: ghcr.io/weeb-poly/weeb-poly/satania
+              command: ['./satania-once.pyz']
+              volumeMounts:
+                - name: satania-google-secret
+                  mountPath: /var/secrets/google
+                  readOnly: true
+              env:
+                - name: GOOGLE_APPLICATION_CREDENTIALS
+                  value: /var/secrets/google/key.json
+                - name: GCAL_ID
+                  valueFrom:
+                    configMapKeyRef:
+                      name: satania-config
+                      key: google_calendar_id
+                - name: PING_ROLE
+                  valueFrom:
+                    configMapKeyRef:
+                      name: satania-config
+                      key: calendar_ping_role
+                - name: WEBHOOK_URL
+                  valueFrom:
+                    secretKeyRef:
+                      name: satania-secret
+                      key: discord-webhook

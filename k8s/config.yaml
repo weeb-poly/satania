@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: satania-config
+  namespace: satania
+  labels:
+    app.kubernetes.io/part-of: satania
+data:
+  google_calendar_id: "ffffffffffffffffffffffffff@group.calendar.google.com"
+  calendar_ping_role: "000000000000000000"

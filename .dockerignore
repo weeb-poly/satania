@@ -14,9 +14,12 @@ example.env
 # Used by pipenv
 .env
 
+# Secrets
+secrets
+
 # Cached Token
 # Created on Run
 token.pickle
 
-# Extras
-extras
+# K8S Files
+k8s

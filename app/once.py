@@ -13,7 +13,7 @@ from .utils import divide_chunks, sleep_till
 
 
 WEBHOOK_URL = os.environ.get('WEBHOOK_URL')
-PING_ROLE = os.environ.get('PING_ROLE')
+PING_ROLE = os.environ.get('PING_ROLE', '')
 
 
 async def send_embeds(embs: List[Embed]) -> None:

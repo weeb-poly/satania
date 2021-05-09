@@ -4,6 +4,7 @@ Discord Webhook Script for Google Calendar Events
 
 ## Note
 
-This project will be archived soon. I encountered multiple
-issues related to the Google Calendar API, and everything
-seemed to get worse the more I tinkered with it.
+The project has been unarchived now that it is in a 
+semi-functional state again. It may be re-archived in the
+future, but I'll try to add more documentation if that
+happens.
