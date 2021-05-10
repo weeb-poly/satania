@@ -44,8 +44,7 @@ def get_embeds(cal: GoogleCalendar, start: Arrow, end: Arrow) -> List[Embed]:
 def get_notify_embeds(cal: GoogleCalendar, start: Arrow, end: Arrow) -> List[Tuple[Arrow, Embed]]:
     events_res = cal.get_events(
         time_min=start.datetime,
-        time_max=end.datetime,
-        order_by="startTime"
+        time_max=end.datetime
     )
 
     embeds = []
